@@ -1,0 +1,78 @@
+<div class="App-loader-container" *ngIf="loader">
+    <div class="App-loader-box">
+        <img src="assets/loadRocket.gif" alt="loading..." />
+    </div>
+</div>
+
+<div class="App" *ngIf="!loader">
+    <h1 class="App-header">SpaceX Launch Programs</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12">
+                <div class="card App-filter-card">
+                    <div class="card-body">
+                        <h5 class="card-title App-filter-header py-2 px-1">Filters</h5>
+                        <p class="card-text App-filter-heading-launch-year">
+                            Launch Year
+                        </p>
+                        <hr class="App-filters-hr" />
+                        <div class="row">
+                            <div class="App-filter-button-container">
+                                <ng-container *ngFor="let btn of launchYears">
+                                    <button
+                                        [ngClass]="(fiters['launch_year'] == btn) ? 'btn btn-success App-filter-button' : 'btn btn-outline-success App-filter-button'"
+                                        (click)="selectFilter('launch_year',btn)">{{btn}}</button>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <p class="card-text App-filter-heading">
+                            Successful Launch
+                        </p>
+                        <hr class="App-filters-hr" />
+                        <div class="App-filter-button-container">
+                            <button
+                                [ngClass]="(fiters['launch_success'] != undefined && fiters['launch_success'] == 'true') ? 'btn btn-success App-filter-button' : 'btn btn-outline-success App-filter-button'"
+                                (click)="selectFilter('launch_success','true')">True</button>
+                            <button
+                                [ngClass]="(fiters['launch_success'] != undefined && fiters['launch_success'] == 'false') ? 'btn btn-success App-filter-button' : 'btn btn-outline-success App-filter-button'"
+                                (click)="selectFilter('launch_success','false')">False</button>
+                        </div>
+                        <p class="card-text App-filter-heading">
+                            Successful Landing
+                        </p>
+                        <hr class="App-filters-hr" />
+                        <div class="App-filter-button-container">
+                            <button
+                                [ngClass]="(fiters['land_success'] != undefined && fiters['land_success'] == 'true') ? 'btn btn-success App-filter-button' : 'btn btn-outline-success App-filter-button'"
+                                (click)="selectFilter('land_success','true')">True</button>
+                            <button
+                                [ngClass]="(fiters['land_success'] != undefined && fiters['land_success'] == 'false') ? 'btn btn-success App-filter-button' : 'btn btn-outline-success App-filter-button'"
+                                (click)="selectFilter('land_success','false')">False</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-10 col-md-6 col-sm-12 col-xs-12">
+                <div class="row" *ngIf="rocketDetails.length;else defaulttemp">
+                    <ng-container *ngFor="let rocket of rocketDetails">
+                        <div class="col-lg-3 col-md-12">
+                            <app-rocket-launch [rocket]="rocket"></app-rocket-launch>
+                        </div>
+                    </ng-container>
+                </div>
+                <ng-template #defaulttemp>
+                    <div class="row nodata">
+                        <div class="col-lg-3 col-md-12">
+                            No Space Rocket Found!
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div>
+            <h5 class="App-Developers-name">
+                Developed by : Suraj Rath
+            </h5>
+        </div>
+    </div>
+</div>
