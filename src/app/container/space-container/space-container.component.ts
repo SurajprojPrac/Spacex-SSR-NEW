@@ -4,7 +4,7 @@ import { Location } from "@angular/common";
 import { Meta, Title } from "@angular/platform-browser";
 
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Event, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-space-container',
@@ -35,15 +35,11 @@ export class SpaceContainerComponent implements OnInit {
     private http: HttpClient, private _route: ActivatedRoute, private _router: Router) {
     this.launchYears = new Array<any>(15).fill(0).map((ele, index) => 2006 + index);
     if (isPlatformBrowser(this.platformId)) {
-      this._route.queryParams.subscribe(param => {
-        if (param && Object.keys(param).length) {
-          for (let p in param) {
-            this.fiters[p] = param[p];
-          }
-        }
-      })
-
-      this.getAllrocketdetails();
+      if (window.location.href.includes('?')) {
+        this.getparam();
+      } else {
+        this.getAllrocketdetails();
+      }
     }
   }
 
@@ -54,8 +50,14 @@ export class SpaceContainerComponent implements OnInit {
     this.meta.addTag({
       description: "create single page application in angular",
     });
+  }
 
 
+  getparam() {
+    for (var [key, value] of location.href.slice(location.href.indexOf('?') + 1).split("&").map(res => res.split("="))) {
+      this.fiters[key] = value;
+    }
+    this.getAllrocketdetails();
   }
 
   getAllrocketdetails() {
