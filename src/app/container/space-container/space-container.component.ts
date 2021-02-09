@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit } from "@angular/core";
+import { isPlatformBrowser, isPlatformServer } from "@angular/common";
+import { Location } from "@angular/common";
+import { Meta, Title } from "@angular/platform-browser";
+
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -13,9 +17,9 @@ export class SpaceContainerComponent implements OnInit {
   launchYears: Array<any>;
   API_BASE_URL = `https://api.spacexdata.com/v3/launches?`;
   rocketDetails = [];
-  loader : boolean = true;
+  loader: boolean = true;
 
-  fiters : any = {
+  fiters: any = {
     limit: 100,
     launch_year: undefined,
     launch_success: undefined,
@@ -23,24 +27,39 @@ export class SpaceContainerComponent implements OnInit {
   }
 
 
-  constructor(private http: HttpClient, private _route: ActivatedRoute,private _router: Router) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: object,
+    private location: Location,
+    private title: Title,
+    private meta: Meta,
+    private http: HttpClient, private _route: ActivatedRoute, private _router: Router) {
     this.launchYears = new Array<any>(15).fill(0).map((ele, index) => 2006 + index);
+    if (isPlatformBrowser(this.platformId)) {
+      this._route.queryParams.subscribe(param => {
+        if (param && Object.keys(param).length) {
+          for (let p in param) {
+            this.fiters[p] = param[p];
+          }
+        }
+      })
+
+      this.getAllrocketdetails();
+    }
   }
 
   ngOnInit() {
-    this._route.queryParams.subscribe(param=>{
-        if(param && Object.keys(param).length){
-          for(let p in param){
-            this.fiters[p]=param[p];
-          }
-        }
-    })
 
-    this.getAllrocketdetails();
+    this.title.setTitle("spacesX launches");
+    this.meta.addTag({ keywords: "angular8, ssr, single page application" });
+    this.meta.addTag({
+      description: "create single page application in angular",
+    });
+
+
   }
 
   getAllrocketdetails() {
-    this.loader=true;
+    this.loader = true;
     let qureyParam = Object.keys(this.fiters).map(key => {
       key = key + "=" + (this.fiters[key] != undefined ? this.fiters[key] : '')
       return key
@@ -48,16 +67,16 @@ export class SpaceContainerComponent implements OnInit {
     let url = this.API_BASE_URL + qureyParam;
     this.http.get(url).subscribe((resp: any) => {
       if (resp) {
-        this.loader=false;
+        this.loader = false;
         this.rocketDetails = resp;
       }
     })
   }
 
-  selectFilter(selectedField:any, value:any) {
+  selectFilter(selectedField: any, value: any) {
 
-    if(this.fiters[selectedField] == value){
-      value=undefined;
+    if (this.fiters[selectedField] == value) {
+      value = undefined;
     }
     this.fiters[selectedField] = value;
     this._router.navigate([], {
