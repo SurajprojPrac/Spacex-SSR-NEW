@@ -48,5 +48,5 @@ SpaceX app is deployed on Heroku [SpaceX-Program](https://space-angular8-ssr.her
 
 # Lighthouse Score
 
-![Lighthouse_Score](https://user-images.githubusercontent.com/78650693/107410179-f487a800-6b32-11eb-8d2f-f99ae66fb8bb.PNG)
+![Lighthouse_Score](https://user-images.githubusercontent.com/78650693/107422747-6cf56580-6b41-11eb-9a69-9bbb513e5b93.PNG)
 
