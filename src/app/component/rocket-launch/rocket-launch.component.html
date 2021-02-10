@@ -9,9 +9,16 @@
         </div>
         <div class="Rocket-detail-label">
             Mission Ids:
-            <ul>
-                <li class="Rocket-detail-value">{{this.rocket.mission_id}}</li>
-            </ul>
+            <!-- <ul> -->
+                <ng-container *ngIf="rocket.mission_id.length;else defaulttemp">
+                    <ng-container *ngFor="let missionId of rocket.mission_id">
+                        <span class="Rocket-detail-value">{{missionId}}</span>
+                    </ng-container>
+                </ng-container>
+                <ng-template #defaulttemp>
+                  <span class="Rocket-detail-value">Not Available</span>
+                </ng-template>
+            <!-- </ul> -->
         </div>
         <div class="Rocket-detail-label">
             Launch Year:
@@ -26,7 +33,13 @@
         <div class="Rocket-detail-label">
             Successful Landing:
             <span class="Rocket-detail-value">
-                {{this.rocket.land_success ? 'true' : 'false'}}
+                {{this.rocket.first_stage?.cores?.length
+                ? this.rocket.first_stage?.cores[0]?.land_success
+                ? "true"
+                : this.rocket.first_stage?.cores[0]?.land_success === false
+                ? "false"
+                : "Not Available"
+                : "Not Available"}}
             </span>
         </div>
     </div>
