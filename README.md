@@ -10,6 +10,16 @@ To install, simply clone this repository & run the following command yarn or npm
 
 Run `npm run serve:ssr` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+# Features
+
+1. User can see list of card of spacex launch.
+2. User can filter launches by selecting custom filters Launch Year, Successful Launch, Successful Landing.
+3. User can view the same state with selected filter after refreshing the browser.
+4. Fully responsive for Mobile View, Tablet View:, Desktop View
+5. SEO friendly.
+6. Server side rendering(SSR) implementation.
+7. Updating view without refreshing browser.
+
 # Heroku Deployment
 
 SpaceX app is deployed on Heroku [SpaceX-Program](https://space-angular8-ssr.herokuapp.com/)
