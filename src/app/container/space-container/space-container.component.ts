@@ -5,6 +5,7 @@ import { Meta, Title } from "@angular/platform-browser";
 
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Event, NavigationEnd, Router } from '@angular/router';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-space-container',
@@ -35,16 +36,18 @@ export class SpaceContainerComponent implements OnInit {
     private http: HttpClient, private _route: ActivatedRoute, private _router: Router) {
     this.launchYears = new Array<any>(15).fill(0).map((ele, index) => 2006 + index);
     if (isPlatformBrowser(this.platformId)) {
-      if (window.location.href.includes('?')) {
-        this.getparam();
-      } else {
-        this.getAllrocketdetails();
-      }
+        this._route.queryParams.pipe(debounceTime(0)).subscribe(resp=>{
+          for(let chk in resp){
+              this.fiters[chk]=resp[chk];
+          }
+          console.log(this.fiters);
+          this.getAllrocketdetails();
+          console.log("API ENDED ");
+        });
     }
   }
 
   ngOnInit() {
-
     this.title.setTitle("spacesX launches");
     this.meta.addTag({ keywords: "angular8, ssr, single page application" });
     this.meta.addTag({
@@ -52,15 +55,8 @@ export class SpaceContainerComponent implements OnInit {
     });
   }
 
-
-  getparam() {
-    for (var [key, value] of location.href.slice(location.href.indexOf('?') + 1).split("&").map(res => res.split("="))) {
-      this.fiters[key] = value;
-    }
-    this.getAllrocketdetails();
-  }
-
   getAllrocketdetails() {
+    console.log("API STARTED");
     this.loader = true;
     let qureyParam = Object.keys(this.fiters).map(key => {
       key = key + "=" + (this.fiters[key] != undefined ? this.fiters[key] : '')
@@ -88,7 +84,6 @@ export class SpaceContainerComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     });
-    this.getAllrocketdetails();
   }
 
 }

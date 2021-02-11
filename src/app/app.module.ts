@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { SpaceContainerComponent } from './container/space-container/space-container.component';
 import { RocketLaunchComponent } from './component/rocket-launch/rocket-launch.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LazyImageLoadingDirective } from './lazyimg.directive';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SpaceContainerComponent,
-    RocketLaunchComponent
+    RocketLaunchComponent,
+    LazyImageLoadingDirective
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

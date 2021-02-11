@@ -2,7 +2,7 @@
     <div>
         <div>
             <img class="card-img-top" style="width: 100%; height: 14rem;" [src]="rocket.links.mission_patch"
-                alt="mission patch img not available on api" class="Rocket-mission-image">
+                alt="mission patch img not available on api" class="Rocket-mission-image" loading="lazy">
         </div>
         <div class="Rocket-mission-name-flight-number">
             {{this.rocket.mission_name}} # {{this.rocket.flight_number}}
